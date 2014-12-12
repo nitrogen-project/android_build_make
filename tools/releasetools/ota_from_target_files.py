@@ -219,7 +219,7 @@ OPTIONS.override_device = 'auto'
 
 METADATA_NAME = 'META-INF/com/android/metadata'
 POSTINSTALL_CONFIG = 'META/postinstall_config.txt'
-UNZIP_PATTERN = ['IMAGES/*', 'META/*']
+UNZIP_PATTERN = ['IMAGES/*', 'META/*', 'INSTALL/*']
 
 
 class BuildInfo(object):
@@ -720,6 +720,16 @@ def AddCompatibilityArchiveIfTrebleEnabled(target_zip, output_zip, target_info,
   AddCompatibilityArchive(system_updated, vendor_updated)
 
 
+def CopyInstallTools(output_zip):
+  install_path = os.path.join(OPTIONS.input_tmp, "INSTALL")
+  for root, subdirs, files in os.walk(install_path):
+     for f in files:
+      install_source = os.path.join(root, f)
+      install_target = os.path.join("install", os.path.relpath(root, install_path), f)
+      output_zip.write(install_source, install_target)
+
+
+
 def WriteFullOTAPackage(input_zip, output_file):
   target_info = BuildInfo(OPTIONS.info_dict, OPTIONS.oem_dicts)
 
@@ -813,11 +823,12 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.AppendExtra("ifelse(is_mounted(\"/system\"), unmount(\"/system\"));")
   device_specific.FullOTA_InstallBegin()
 
+  CopyInstallTools(output_zip)
+  script.UnpackPackageDir("install", "/tmp/install")
+  script.SetPermissionsRecursive("/tmp/install", 0, 0, 0755, 0644, None, None)
+  script.SetPermissionsRecursive("/tmp/install/bin", 0, 0, 0755, 0755, None, None)
+
   if OPTIONS.backuptool:
-    common.ZipWriteStr(output_zip, "system/bin/backuptool.sh",
-                ""+input_zip.read("SYSTEM/bin/backuptool.sh"))
-    common.ZipWriteStr(output_zip, "system/bin/backuptool.functions",
-                ""+input_zip.read("SYSTEM/bin/backuptool.functions"))
     script.Mount("/system")
     script.RunBackup("backup")
     script.Unmount("/system")
