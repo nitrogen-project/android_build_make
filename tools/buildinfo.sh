@@ -29,6 +29,9 @@ if [ -n "$AB_OTA_UPDATER" ] ; then
   echo "ro.build.ab_update=$AB_OTA_UPDATER"
 fi
 
+echo "ro.nitrogen.device=$TARGET_DEVICE"
+echo "org.nitrogen.version=Nitrogen-OS-P-$TARGET_DEVICE-$(date +"%Y%m%d")"
+
 # These values are deprecated, use "ro.product.cpu.abilist"
 # instead (see below).
 echo "# ro.product.cpu.abi and ro.product.cpu.abi2 are obsolete,"
