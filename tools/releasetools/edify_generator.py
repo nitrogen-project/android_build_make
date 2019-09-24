@@ -160,6 +160,9 @@ class EdifyGenerator(object):
     self.script.append(('run_program("/tmp/install/bin/backuptool.sh", "%s", "%s");' % (
         command, system_path)))
 
+  def MountSys(self, command):
+    self.script.append(('run_program("/tmp/install/bin/system-mount.sh", "%s");' % command))
+
   def ShowProgress(self, frac, dur):
     """Update the progress bar, advancing it over 'frac' over the next
     'dur' seconds.  'dur' may be zero to advance it via SetProgress
@@ -236,12 +239,6 @@ class EdifyGenerator(object):
     """Unpack a given directory from the OTA package into the given
     destination directory."""
     self.script.append('package_extract_dir("%s", "%s");' % (src, dst))
-
-  def Unmount(self, mount_point):
-    """Unmount the partition with the given mount_point."""
-    if mount_point in self.mounts:
-      self.mounts.remove(mount_point)
-      self.script.append('unmount("%s");' % (mount_point,))
 
   def Comment(self, comment):
     """Write a comment into the update script."""
