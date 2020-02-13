@@ -30,7 +30,7 @@ if [ -n "$AB_OTA_UPDATER" ] ; then
 fi
 
 echo "ro.nitrogen.device=$TARGET_DEVICE"
-echo "org.nitrogen.version=Nitrogen-OS-P-$TARGET_DEVICE-$(date +"%Y%m%d")"
+echo "org.nitrogen.version=Nitrogen-OS-10-$TARGET_DEVICE-$(date +"%Y%m%d")"
 
 # These values are deprecated, use "ro.product.cpu.abilist"
 # instead (see below).
