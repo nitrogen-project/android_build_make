@@ -235,6 +235,20 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   if OPTIONS.backuptool:
     script.RunBackup("backup", sysmount, target_info.get('use_dynamic_partitions') == "true")
 
+  model = target_info.GetBuildProp("ro.product.model")
+  build = target_info.GetBuildProp("ro.build.date")
+
+  script.Print("- Nitrogen Project ---------------------------");
+  script.Print("*  * *** *** **** **** **** *** *  *  **** ***");
+  script.Print("** *  *   *  *  * *  * *    *   ** *  *  * *");
+  script.Print("* **  *   *  **** *  * * ** *** * **  *  * ***");
+  script.Print("*  *  *   *  * *  *  * *  * *   *  *  *  *   *");
+  script.Print("*  * ***  *  * *  **** **** *** *  *  **** ***");
+  script.Print("- By xyyx ------------------- Android 13.0.0 -");
+  script.Print(" Compiled: %s "%(build));
+  script.Print(" For: %s   "%(model));
+  script.Print("----------------------------------------------");
+
   # All other partitions as well as the data wipe use 10% of the progress, and
   # the update of the system partition takes the remaining progress.
   system_progress = 0.9 - (len(block_diff_dict) - 1) * 0.1
