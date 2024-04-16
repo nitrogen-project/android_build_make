@@ -1037,7 +1037,7 @@ $(INSTALLED_FILES_FILE_ROOT) : $(INTERNAL_ROOT_FILES) $(FILESLIST) $(FILESLIST_U
 	$(FILESLIST_UTIL) -c $(@:.txt=.json) > $@
 
 	@echo "Generating Changelog"
-	$(hide) ./vendor/nitrogen/tools/changelog.sh
+	$(hide) ./vendor/nitrogen/tools/changelog.sh $(PRODUCT_OUT)
 	$(hide) mv $(PRODUCT_OUT)/Changelog.txt $(PRODUCT_OUT)/$(TARGET_PRODUCT)-Changelog.txt
 	$(hide) cp $(PRODUCT_OUT)/$(TARGET_PRODUCT)-Changelog.txt $(PRODUCT_OUT)/$(TARGET_COPY_OUT_SYSTEM)/etc/Changelog.txt
 
